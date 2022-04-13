@@ -1,0 +1,48 @@
+-- Ведомость
+CREATE OR REPLACE VIEW statement_view AS
+SELECT "group".name AS "group_name",
+	discipline.name AS "discipline_name",
+	attestation_type.name AS "attestation_type_name",
+	mentor.name AS "mentor_name",
+	"statement".attestation_date AS "statement_attestation_date"
+FROM "statement" 
+	JOIN student ON ("statement".student_id = student.id)
+	JOIN "group" ON (student.group_id = "group".id)
+	JOIN discipline ON ("statement".discipline_id = discipline.id)
+	JOIN attestation_type ON ("statement".attestation_type_id = attestation_type.id)
+	JOIN mentor ON ("statement".mentor_id = mentor.id);
+
+-- Качество обучения
+-- CREATE OR REPLACE VIEW education_quality_view AS
+-- SELECT "group".name AS "group_name",
+-- 	COUNT("statement".mark) AS "all",
+-- 	COUNT("statement".mark BETWEEN 4 AND 5) AS "4 and 5",
+-- 	COUNT("statement".mark) / COUNT("statement".mark BETWEEN 4 AND 5) AS "success"
+-- FROM "statement" 
+-- 	JOIN student ON ("statement".student_id = student.id)
+-- 	JOIN "group" ON (student.group_id = "group".id)
+-- GROUP BY "group_name";
+
+-- SELECT * FROM education_quality;
+
+-- Качество обучения
+CREATE OR REPLACE VIEW education_quality_view AS
+SELECT "group".name AS "group_name",
+ 	ROUND(COUNT("statement".mark BETWEEN 4 AND 5 OR NOT NULL) * 100 / COUNT("statement".mark)) AS success
+FROM "statement" 
+	JOIN student ON ("statement".student_id = student.id)
+	JOIN "group" ON (student.group_id = "group".id)
+GROUP BY "group_name"
+ORDER BY "group_name";
+
+SELECT * FROM education_quality_view;
+-- SELECT * FROM "statement";
+
+-- CREATE OR REPLACE VIEW mark_group AS
+-- SELECT "group".name AS "group_name","statement".mark
+-- FROM "statement" 
+-- 	JOIN student ON ("statement".student_id = student.id)
+-- 	JOIN "group" ON (student.group_id = "group".id AND "group".name = 'ИС1-19')
+-- ORDER BY "group_name";
+
+-- SELECT * FROM mark_group;
