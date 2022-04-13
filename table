@@ -1,0 +1,46 @@
+CREATE TABLE IF NOT EXISTS "group" (
+	id SERIAL PRIMARY KEY,
+    name VARCHAR(50) UNIQUE
+);
+
+CREATE TABLE IF NOT EXISTS student (
+	id SERIAL PRIMARY KEY,
+	group_id INTEGER REFERENCES "group"(id),
+	name VARCHAR(50)
+);
+
+CREATE TABLE IF NOT EXISTS speciality (
+	id SERIAL PRIMARY KEY,
+	name VARCHAR(50)
+);
+
+CREATE TABLE IF NOT EXISTS discipline (
+	id SERIAL PRIMARY KEY,
+	speciality_id INTEGER REFERENCES speciality(id),
+	name VARCHAR(50)
+);
+
+CREATE TABLE IF NOT EXISTS attestation_type (
+	id SERIAL PRIMARY KEY,
+    name VARCHAR(50)
+);
+
+CREATE TABLE IF NOT EXISTS mentor (
+	id SERIAL PRIMARY KEY,
+	name VARCHAR(50)
+);
+
+CREATE TABLE IF NOT EXISTS "statement" (
+	id SERIAL PRIMARY KEY,
+	student_id INTEGER REFERENCES student(id),
+	discipline_id INTEGER REFERENCES discipline(id),
+	attestation_type_id INTEGER REFERENCES attestation_type(id),
+	mentor_id INTEGER REFERENCES mentor(id),
+    attestation_date DATE,
+	mark INT
+);
+
+CREATE TABLE IF NOT EXISTS profile (
+	id SERIAL PRIMARY KEY,
+	student_id INTEGER REFERENCES student(id)
+)
