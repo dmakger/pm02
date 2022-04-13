@@ -1,0 +1,1 @@
+"C:\Program Files\PostgreSQL\14\bin\psql" -U postgres -d bilet_1 -f C:\Users\User\Desktop\backup_database.dump
